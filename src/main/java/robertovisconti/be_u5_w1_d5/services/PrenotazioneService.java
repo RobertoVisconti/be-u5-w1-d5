@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import robertovisconti.be_u5_w1_d5.entities.Postazione;
 import robertovisconti.be_u5_w1_d5.entities.Prenotazione;
 import robertovisconti.be_u5_w1_d5.entities.Utente;
+import robertovisconti.be_u5_w1_d5.enums.StatoPostazione;
 import robertovisconti.be_u5_w1_d5.enums.TipoPostazione;
 import robertovisconti.be_u5_w1_d5.exceptions.EmptyFieldException;
 import robertovisconti.be_u5_w1_d5.exceptions.ExistException;
@@ -77,6 +78,9 @@ public class PrenotazioneService {
             throw new ExistPrenotationException("L'utente " + username + " ha già una prenotazione per il giorno: " + data);
         }
 
+        postazione.setStatoPostazione(StatoPostazione.OCCUPATO);
+        postazioneRepository.save(postazione);
+
 
         Prenotazione prenotazione = new Prenotazione();
         prenotazione.setUtente(utente);
@@ -94,6 +98,16 @@ public class PrenotazioneService {
     // controllo sul popolamento
     public boolean utentiPresenti() {
         return utenteRepository.count() > 0;
+    }
+
+    // stato prenotazione occupato o libero, controllo automatico sulle 24 ore in base alle prenotazioni sulle postazioni
+    public StatoPostazione statoAttuale(UUID postazione, LocalDateTime momento) {
+
+        LocalDateTime inizio = momento.minusDays(1);
+
+        boolean isOccupato = prenotazioneRepository.existsByPostazioneAndDataBetween(postazione, inizio, momento);
+
+        return isOccupato ? StatoPostazione.OCCUPATO : StatoPostazione.LIBERO;
     }
 
 }

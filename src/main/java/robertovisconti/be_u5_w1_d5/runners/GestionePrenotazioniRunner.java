@@ -17,6 +17,7 @@ import robertovisconti.be_u5_w1_d5.services.PrenotazioneService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.UUID;
 
 @Component
@@ -41,9 +42,11 @@ public class GestionePrenotazioniRunner implements CommandLineRunner {
         boolean utentiInseriti = prenotazioneService.utentiPresenti();
 
 
-        // prenotazione
+        // prenotazione avvenuta
         try {
+            System.out.println("***** PRENOTAZIONE AVVENUTA *****");
             List<Postazione> postazioneDisponibili = prenotazioneService.cercaPostazioni(TipoPostazione.OPENSPACE, "Roma");
+            System.out.println("Postazioni disponibili in base alla ricerca " + postazioneDisponibili);
 
             String usernameDB = "gianriccardo_ferretti_6463";
             UUID idPostazioneDB = UUID.fromString("de9fa2b2-6584-4340-ab2d-0b1168d29b94");
@@ -54,6 +57,28 @@ public class GestionePrenotazioniRunner implements CommandLineRunner {
             System.out.println("Prenotazione effettuata con successo! ID: " + nuovaPrenotazione.getId());
         } catch (SaveErrorException ex) {
             System.out.println("Impossibile effettuare la prenotazione:" + ex.getMessage());
+        }
+
+        // prenotazione con verifica dello stato
+        try{
+            System.out.println("***** PRENOTAZIONE CON VERIFICA DELLO STATO*****");
+
+            UUID idPosDB = UUID.fromString("de9fa2b2-6584-4340-ab2d-0b1168d29b94");
+            Postazione posDB = aziendaService.cercaPostazione(idPosDB);
+
+            // stato postazione
+            StatoPostazione statoOra = prenotazioneService.statoAttuale(posDB, LocalDateTime.now());
+            System.out.println("Stato ora: " + statoOra);
+
+            //Prenotazione che parte ora
+            String usernameDb = "gianriccardo_ferretti_6463";
+            prenotazioneService.prenotaPostazione(usernameDb, idPosDB, LocalDateTime.now());
+            System.out.println(" Creazione riuscita in questo esatto momento.");
+
+            // controllo lo stato dopo la prenotazione
+            StatoPostazione statoDopoPren = prenotazioneService.statoAttuale(idPosDB, LocalDateTime.now());
+            
+
         }
 
 

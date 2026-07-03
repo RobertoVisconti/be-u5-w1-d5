@@ -13,4 +13,6 @@ public interface PrenotazioneRepository extends JpaRepository<Prenotazione, UUID
     boolean existsByPostazioneAndData(Postazione postazione, LocalDateTime data);
 
     boolean existsByUtenteAndData(Utente utente, LocalDateTime data);
+
+    boolean existsByPostazioneAndDataBetween(Postazione postazione, LocalDateTime inizio, LocalDateTime fine);
 }
