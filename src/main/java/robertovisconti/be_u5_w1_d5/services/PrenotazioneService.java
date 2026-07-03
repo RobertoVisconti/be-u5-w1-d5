@@ -105,7 +105,7 @@ public class PrenotazioneService {
 
         LocalDateTime inizio = momento.minusDays(1);
 
-        boolean isOccupato = prenotazioneRepository.existsByPostazioneAndDataBetween(postazione, inizio, momento);
+        boolean isOccupato = prenotazioneRepository.existsByPostazione_CodiceUnivocoAndDataBetween(postazione, inizio, momento);
 
         return isOccupato ? StatoPostazione.OCCUPATO : StatoPostazione.LIBERO;
     }

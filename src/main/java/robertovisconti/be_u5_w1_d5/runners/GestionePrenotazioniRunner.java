@@ -11,13 +11,13 @@ import robertovisconti.be_u5_w1_d5.entities.Prenotazione;
 import robertovisconti.be_u5_w1_d5.entities.Utente;
 import robertovisconti.be_u5_w1_d5.enums.StatoPostazione;
 import robertovisconti.be_u5_w1_d5.enums.TipoPostazione;
+import robertovisconti.be_u5_w1_d5.exceptions.ErrorTimeException;
 import robertovisconti.be_u5_w1_d5.exceptions.SaveErrorException;
 import robertovisconti.be_u5_w1_d5.services.AziendaService;
 import robertovisconti.be_u5_w1_d5.services.PrenotazioneService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.SortedMap;
 import java.util.UUID;
 
 @Component
@@ -60,14 +60,14 @@ public class GestionePrenotazioniRunner implements CommandLineRunner {
         }
 
         // prenotazione con verifica dello stato
-        try{
+        try {
             System.out.println("***** PRENOTAZIONE CON VERIFICA DELLO STATO*****");
 
             UUID idPosDB = UUID.fromString("de9fa2b2-6584-4340-ab2d-0b1168d29b94");
             Postazione posDB = aziendaService.cercaPostazione(idPosDB);
 
             // stato postazione
-            StatoPostazione statoOra = prenotazioneService.statoAttuale(posDB, LocalDateTime.now());
+            StatoPostazione statoOra = prenotazioneService.statoAttuale(idPosDB, LocalDateTime.now());
             System.out.println("Stato ora: " + statoOra);
 
             //Prenotazione che parte ora
@@ -77,8 +77,15 @@ public class GestionePrenotazioniRunner implements CommandLineRunner {
 
             // controllo lo stato dopo la prenotazione
             StatoPostazione statoDopoPren = prenotazioneService.statoAttuale(idPosDB, LocalDateTime.now());
-            
+            System.out.println("Stato dopo la prenotazione: " + statoDopoPren);
 
+            // controllo dopo 25 ore
+            LocalDateTime afterH24 = LocalDateTime.now().plusHours(25);
+            StatoPostazione statoAfterH24 = prenotazioneService.statoAttuale(idPosDB, afterH24);
+            System.out.println("Stato dopo le 24 ore: " + statoAfterH24 + " Se si vuole far risultare libero per provare il metodo commentare il primo test di prenotazione.");
+
+        } catch (ErrorTimeException ex) {
+            System.out.println("Erroe durante il test delle 24 ore passate: " + ex.getMessage());
         }
 
 
