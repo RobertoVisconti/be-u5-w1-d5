@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import robertovisconti.be_u5_w1_d5.entities.Edificio;
 import robertovisconti.be_u5_w1_d5.entities.Postazione;
+import robertovisconti.be_u5_w1_d5.entities.Prenotazione;
 import robertovisconti.be_u5_w1_d5.entities.Utente;
 import robertovisconti.be_u5_w1_d5.enums.StatoPostazione;
 import robertovisconti.be_u5_w1_d5.enums.TipoPostazione;
@@ -14,7 +15,9 @@ import robertovisconti.be_u5_w1_d5.exceptions.SaveErrorException;
 import robertovisconti.be_u5_w1_d5.services.AziendaService;
 import robertovisconti.be_u5_w1_d5.services.PrenotazioneService;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class GestionePrenotazioniRunner implements CommandLineRunner {
@@ -34,10 +37,27 @@ public class GestionePrenotazioniRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // popolo il DB con controllo
         List<Edificio> edificiDB = aziendaService.recuperoEdifici();
         boolean utentiInseriti = prenotazioneService.utentiPresenti();
 
+
+        // prenotazione
+        try {
+            List<Postazione> postazioneDisponibili = prenotazioneService.cercaPostazioni(TipoPostazione.OPENSPACE, "Roma");
+
+            String usernameDB = "gianriccardo_ferretti_6463";
+            UUID idPostazioneDB = UUID.fromString("de9fa2b2-6584-4340-ab2d-0b1168d29b94");
+            LocalDateTime dataPrenotazione = LocalDateTime.now().plusDays(1).withHour(10).withMinute(0);
+
+            Prenotazione nuovaPrenotazione = prenotazioneService.prenotaPostazione(usernameDB, idPostazioneDB, dataPrenotazione);
+
+            System.out.println("Prenotazione effettuata con successo! ID: " + nuovaPrenotazione.getId());
+        } catch (SaveErrorException ex) {
+            System.out.println("Impossibile effettuare la prenotazione:" + ex.getMessage());
+        }
+
+
+        // popolo il DB con controllo
         if (!edificiDB.isEmpty() || utentiInseriti) {
             System.out.println(" Database già popolato");
             return;
