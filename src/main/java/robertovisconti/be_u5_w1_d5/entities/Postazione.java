@@ -38,7 +38,7 @@ public class Postazione {
     private StatoPostazione statoPostazione;
 
     @Column(name = "numero_massimo_occupanti", nullable = false)
-    private int numeroMassimoOccupanti;
+    private Integer numeroMassimoOccupanti;
 
     @ManyToOne
     @JoinColumn(name = "id_edificio")

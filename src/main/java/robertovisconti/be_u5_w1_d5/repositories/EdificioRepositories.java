@@ -6,4 +6,6 @@ import robertovisconti.be_u5_w1_d5.entities.Edificio;
 import java.util.UUID;
 
 public interface EdificioRepositories extends JpaRepository<Edificio, UUID> {
+
+    boolean existByNomeEdificioAndIndirizzo(String nomeEdificio, String indirizzo);
 }
