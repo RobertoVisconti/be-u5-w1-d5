@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import robertovisconti.be_u5_w1_d5.entities.Edificio;
 import robertovisconti.be_u5_w1_d5.entities.Postazione;
 import robertovisconti.be_u5_w1_d5.entities.Utente;
+import robertovisconti.be_u5_w1_d5.enums.StatoPostazione;
 import robertovisconti.be_u5_w1_d5.enums.TipoPostazione;
 import robertovisconti.be_u5_w1_d5.exceptions.SaveErrorException;
 import robertovisconti.be_u5_w1_d5.services.AziendaService;
@@ -57,13 +58,13 @@ public class GestionePrenotazioniRunner implements CommandLineRunner {
 
         // genero e associo le postazioni
         List<Edificio> edificiDB2 = aziendaService.recuperoEdifici();
-        for (int i = 0; i < 15; i++) ;
-        {
+        for (int i = 0; i < 15; i++) {
             Postazione pos = new Postazione();
 
             pos.setDescrizione("Postazione " + faker.options().option("Premium", "Standard", "Executive") + "con monitor " + faker.options().option("24\"", "27\"", "32\""));
-            pos.setTipoPostazione(faker.options().option(TipoPostazione.class));
+            pos.setTipoPostazione(faker.options().option(TipoPostazione.OPENSPACE, TipoPostazione.PRIVATO, TipoPostazione.SALA_RIUNIONI));
             pos.setNumeroMassimoOccupanti(faker.number().numberBetween(1, 20));
+            pos.setStatoPostazione(StatoPostazione.LIBERO);
 
             Edificio edificioAss = edificiDB2.get(faker.number().numberBetween(0, edificiDB2.size()));
             try {
@@ -79,10 +80,11 @@ public class GestionePrenotazioniRunner implements CommandLineRunner {
             Utente ut = new Utente();
             String nome = faker.name().firstName();
             String cognome = faker.name().lastName();
+            String numeroUnico = faker.number().digits(4);
 
             ut.setNomeCompleto(nome + " " + cognome);
-            ut.setUsername((nome + "_" + cognome + "_" + faker.number().digits(2)).toLowerCase());
-            ut.setEmail(faker.internet().emailAddress());
+            ut.setUsername((nome + "_" + cognome + "_" + numeroUnico).toLowerCase().replaceAll("\\s+", ""));
+            ut.setEmail((faker.internet().username() + "_" + numeroUnico + "@" + faker.internet().domainName()).toLowerCase().replaceAll("\\s+", ""));
 
             try {
                 prenotazioneService.salvaUtente(ut);

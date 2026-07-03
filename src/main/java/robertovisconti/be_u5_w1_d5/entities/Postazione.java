@@ -32,9 +32,11 @@ public class Postazione {
     private String descrizione;
 
     @Column(name = "tipo_postazione", nullable = false)
+    @Enumerated(EnumType.STRING)
     private TipoPostazione tipoPostazione;
 
     @Column(name = "stato_postazione", nullable = false)
+    @Enumerated(EnumType.STRING)
     private StatoPostazione statoPostazione;
 
     @Column(name = "numero_massimo_occupanti", nullable = false)
@@ -62,5 +64,11 @@ public class Postazione {
                 " | statoPostazione=" + statoPostazione +
                 " | numeroMassimoOccupanti=" + numeroMassimoOccupanti +
                 " | edificio=" + edificio;
+    }
+
+    public void setTipo(TipoPostazione option) {
+    }
+
+    public void setStato(StatoPostazione statoPostazione) {
     }
 }

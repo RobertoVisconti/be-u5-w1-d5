@@ -25,7 +25,7 @@ public class Edificio {
     @Column(name = "id_edificio")
     private UUID id;
 
-    @Column(name = "nome_edificio", nullable = false, length = 30)
+    @Column(name = "nome_edificio", nullable = false, length = 150)
     private String nomeEdificio;
 
     @Column(nullable = false)

@@ -41,7 +41,7 @@ public class AziendaService {
             throw new EmptyFieldException("Il campo Indirizzo non può essere vuoto.");
         }
         // controllo se esiste già quell'edificio in quella citta
-        if (edificioRepositories.existByNomeEdificioAndIndirizzo(edificio.getNomeEdificio(), edificio.getIndirizzo())) {
+        if (edificioRepositories.existsByNomeEdificioAndIndirizzo(edificio.getNomeEdificio(), edificio.getIndirizzo())) {
             throw new ExistException("L'edificio: " + edificio.getNomeEdificio() + " esiste già all'indirizzo: " + edificio.getIndirizzo());
         }
         return edificioRepositories.save(edificio);

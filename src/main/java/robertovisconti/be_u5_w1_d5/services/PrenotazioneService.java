@@ -87,8 +87,8 @@ public class PrenotazioneService {
     }
 
     // ricerca postazioni
-    List<Postazione> cercaPostazioni(TipoPostazione tipoPostazione, String citta) {
-        return postazioneRepository.findByTipoAndEdificioCitta(tipoPostazione, citta);
+    public List<Postazione> cercaPostazioni(TipoPostazione tipoPostazione, String citta) {
+        return postazioneRepository.findByTipoPostazioneAndEdificio_Citta(tipoPostazione, citta);
     }
 
     // controllo sul popolamento
