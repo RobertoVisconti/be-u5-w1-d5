@@ -29,7 +29,7 @@ public class AziendaService {
 
 
     // salvataggio edificio
-    public Edificio edificio(Edificio edificio) {
+    public Edificio salvaEdificio(Edificio edificio) {
         // controllo campi vuoto
         if (edificio.getNomeEdificio() == null || edificio.getNomeEdificio().isBlank()) {
             throw new EmptyFieldException("Il campo Nome Edificio non può essere vuoto.");

@@ -91,4 +91,9 @@ public class PrenotazioneService {
         return postazioneRepository.findByTipoAndEdificioCitta(tipoPostazione, citta);
     }
 
+    // controllo sul popolamento
+    public boolean utentiPresenti() {
+        return utenteRepository.count() > 0;
+    }
+
 }

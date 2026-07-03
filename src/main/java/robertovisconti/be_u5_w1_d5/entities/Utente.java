@@ -29,7 +29,7 @@ public class Utente {
     @Column(name = "nome_completo", unique = true)
     private String nomeCompleto;
 
-    @Setter(AccessLevel.NONE)
+    
     @Column(nullable = false, unique = true)
     private String email;
 
