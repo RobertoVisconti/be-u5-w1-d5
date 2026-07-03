@@ -2,7 +2,10 @@ package robertovisconti.be_u5_w1_d5.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import robertovisconti.be_u5_w1_d5.enums.StatoPostazione;
 import robertovisconti.be_u5_w1_d5.enums.TipoPostazione;
 
@@ -10,14 +13,18 @@ import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "postazione")
 public class Postazione {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     @Column(name = "id_postazione")
     private UUID id;
 
+    @Setter(AccessLevel.NONE)
     @Column(name = "codice_univoco", nullable = false, unique = true)
     private UUID codiceUnivoco = UUID.randomUUID();
 

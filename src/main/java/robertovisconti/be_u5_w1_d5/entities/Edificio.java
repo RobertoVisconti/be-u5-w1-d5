@@ -2,13 +2,18 @@ package robertovisconti.be_u5_w1_d5.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 
 
 @Table(name = "edificio")
@@ -16,6 +21,7 @@ public class Edificio {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     @Column(name = "id_edificio")
     private UUID id;
 

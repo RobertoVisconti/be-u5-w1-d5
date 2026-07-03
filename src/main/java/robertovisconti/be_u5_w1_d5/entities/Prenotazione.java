@@ -2,13 +2,18 @@ package robertovisconti.be_u5_w1_d5.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 
 @Table(name = "prenotazione",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"id_postazione", "data"}),
@@ -20,6 +25,7 @@ public class Prenotazione {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     @Column(name = "id_prenotazione")
     private UUID id;
 
