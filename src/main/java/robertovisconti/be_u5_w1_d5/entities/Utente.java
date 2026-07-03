@@ -2,18 +2,24 @@ package robertovisconti.be_u5_w1_d5.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 
 @Table(name = "utente")
 public class Utente {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     @Column(name = "id_utente")
     private UUID id;
 
@@ -23,6 +29,7 @@ public class Utente {
     @Column(name = "nome_completo", unique = true)
     private String nomeCompleto;
 
+    @Setter(AccessLevel.NONE)
     @Column(nullable = false, unique = true)
     private String email;
 

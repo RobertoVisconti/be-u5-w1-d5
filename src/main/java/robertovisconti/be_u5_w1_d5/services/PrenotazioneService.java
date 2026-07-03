@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import robertovisconti.be_u5_w1_d5.entities.Postazione;
 import robertovisconti.be_u5_w1_d5.entities.Prenotazione;
 import robertovisconti.be_u5_w1_d5.entities.Utente;
+import robertovisconti.be_u5_w1_d5.enums.TipoPostazione;
+import robertovisconti.be_u5_w1_d5.exceptions.EmptyFieldException;
+import robertovisconti.be_u5_w1_d5.exceptions.ExistException;
 import robertovisconti.be_u5_w1_d5.exceptions.ExistPrenotationException;
 import robertovisconti.be_u5_w1_d5.exceptions.NotFoundException;
 import robertovisconti.be_u5_w1_d5.repositories.PostazioneRepository;
@@ -13,6 +16,7 @@ import robertovisconti.be_u5_w1_d5.repositories.PrenotazioneRepository;
 import robertovisconti.be_u5_w1_d5.repositories.UtenteRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,6 +38,23 @@ public class PrenotazioneService {
 
     // salva utente
     public Utente salvaUtente(Utente utente) {
+        // controllo campi vuoto
+        if (utente.getUsername() == null || utente.getUsername().isBlank()) {
+            throw new EmptyFieldException("Il campo username non può essere vuoto.");
+        }
+        if (utente.getNomeCompleto() == null || utente.getNomeCompleto().isBlank()) {
+            throw new EmptyFieldException("Il campo Nome Completo non può essere vuoto.");
+        }
+        if (utente.getEmail() == null || utente.getEmail().isBlank()) {
+            throw new EmptyFieldException("Il campo email non può essere vuoto.");
+        }
+        // controllo se email e username sono già utilizzati
+        if (utenteRepository.findByUsername(utente.getUsername()).isPresent()) {
+            throw new ExistException("Lo username " + utente.getUsername() + " esiste già.");
+        }
+        if (utenteRepository.existsByEmail(utente.getEmail())) {
+            throw new ExistException("L'email inserita: " + utente.getEmail() + " è già associata ad un account.");
+        }
         return utenteRepository.save(utente);
     }
 
@@ -64,5 +85,10 @@ public class PrenotazioneService {
 
         return prenotazioneRepository.save(prenotazione);
     }
-    
+
+    // ricerca postazioni
+    List<Postazione> cercaPostazioni(TipoPostazione tipoPostazione, String citta) {
+        return postazioneRepository.findByTipoAndEdificioCitta(tipoPostazione, citta);
+    }
+
 }
