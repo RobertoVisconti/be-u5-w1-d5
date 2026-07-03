@@ -64,7 +64,6 @@ public class GestionePrenotazioniRunner implements CommandLineRunner {
             System.out.println("***** PRENOTAZIONE CON VERIFICA DELLO STATO*****");
 
             UUID idPosDB = UUID.fromString("de9fa2b2-6584-4340-ab2d-0b1168d29b94");
-            Postazione posDB = aziendaService.cercaPostazione(idPosDB);
 
             // stato postazione
             StatoPostazione statoOra = prenotazioneService.statoAttuale(idPosDB, LocalDateTime.now());
