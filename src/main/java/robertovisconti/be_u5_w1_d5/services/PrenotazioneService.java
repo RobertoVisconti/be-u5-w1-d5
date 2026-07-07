@@ -82,7 +82,7 @@ public class PrenotazioneService {
         postazioneRepository.save(postazione);
 
 
-        Prenotazione prenotazione = new Prenotazione();
+        Prenotazione prenotazione = new Prenotazione();// posso passare i valori direttamente come paramentri e sotto banco avviene un set
         prenotazione.setUtente(utente);
         prenotazione.setPostazione(postazione);
         prenotazione.setData(data);
